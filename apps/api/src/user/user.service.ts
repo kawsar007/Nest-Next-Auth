@@ -10,16 +10,20 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const { password, ...user } = createUserDto;
     const hashedPassword = await hash(password);
-    return await this.prisma.user.create({
-      data: {
-        password: hashedPassword,
-        ...user,
-      }
-    });
+    try {
+      return await this.prisma.user.create({
+        data: {
+          password: hashedPassword,
+          ...user,
+        }
+      });
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async findByEmail(email: string) {
-    this.prisma.user.findUnique({
+    return await this.prisma.user.findUnique({
       where: {
         email
       }
