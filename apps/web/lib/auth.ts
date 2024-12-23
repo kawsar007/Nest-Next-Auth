@@ -55,7 +55,7 @@ export async function signUp(
 export async function signIn(
   state: FormState,
   formData: FormData
-): Promise<FormState | void> {
+): Promise<FormState> {
   const validationFields = LoginFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password")

@@ -50,3 +50,11 @@ export async function getSession() {
     redirect("/auth/signin")
   }
 }
+
+export async function deleteSession() {
+  try {
+    await cookies().delete("session");
+  } catch (err) {
+    console.error("Failed to delete the session", err);
+  }
+}
