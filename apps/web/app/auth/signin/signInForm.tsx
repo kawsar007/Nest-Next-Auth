@@ -4,10 +4,17 @@ import { Label } from "@/components/ui/label";
 import SubmitButton from "@/components/ui/submitButton";
 import { signIn } from "@/lib/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useFormState } from "react-dom";
 
 const SignInForm = () => {
+  const router = useRouter();
   const [state, action] = useFormState(signIn, undefined);
+  // Redirect on successful login
+  if (state?.success) {
+    router.push("/"); // Perform client-side redirect
+  }
+
   return (
     <form action={action}>
       <div className="flex flex-col gap-2 w-64">

@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { BACKEND_URL } from "./constants";
+import { createSession } from "./session";
 import {
   FormState,
   LoginFormSchema,
@@ -54,7 +55,7 @@ export async function signUp(
 export async function signIn(
   state: FormState,
   formData: FormData
-): Promise<FormState> {
+): Promise<FormState | void> {
   const validationFields = LoginFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password")
@@ -74,17 +75,21 @@ export async function signIn(
       body: JSON.stringify(validationFields?.data)
     });
 
-    console.log("Response ---> ", response);
-
-
     if (response.ok) {
-
       const result = await response.json();
-
+      console.log("Authentication result:", result);
       // TODO: Create The Session For Authenticated User.
-      console.log({ result });
-
+      await createSession({
+        user: {
+          id: result.id,
+          name: result.name
+        }
+      });
+      // redirect("/auth/signup");
+      return { success: true };
     } else {
+      const errorText = await response.text(); // Log response text for error
+      console.error("Non-OK Response:", response.status, errorText);
       return {
         message: response.status === 401 ? "Invalid Credentials!" : response.statusText,
       }
