@@ -1,4 +1,5 @@
 
+import { getSession } from "@/lib/session";
 import { Button } from "@repo/ui/button";
 import Image, { type ImageProps } from "next/image";
 import styles from "./page.module.css";
@@ -19,7 +20,10 @@ const ThemeImage = (props: Props) => {
   );
 };
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession();
+  console.log("Session", session);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>

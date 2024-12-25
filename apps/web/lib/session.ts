@@ -9,7 +9,7 @@ export type Session = {
     id: string;
     name: string;
   };
-  // accessToken: string;
+  accessToken: string;
   // refreshToken: string;
 };
 
@@ -58,3 +58,7 @@ export async function deleteSession() {
     console.error("Failed to delete the session", err);
   }
 }
+
+// export async function deleteSession() {
+//   await cookies().delete("session");
+// }
