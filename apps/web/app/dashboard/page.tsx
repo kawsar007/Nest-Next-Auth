@@ -5,6 +5,8 @@ const Dashboard = async () => {
   const session = await getSession();
   if (!session || !session?.user) redirect('/auth/signin');
 
+  console.log("Session---> ", session);
+
   return (
     <div>Dashboard</div>
   )

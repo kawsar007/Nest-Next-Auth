@@ -84,7 +84,8 @@ export async function signIn(
           id: result.id,
           name: result.name
         },
-        accessToken: result.accessToken
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken
       });
       // redirect("/auth/signup");
       return { success: true };
