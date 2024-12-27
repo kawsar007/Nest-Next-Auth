@@ -59,6 +59,32 @@ export async function deleteSession() {
   }
 }
 
+export async function updateTokens({
+  accessToken,
+  refreshToken
+}: {
+  accessToken: string;
+  refreshToken: string;
+}) {
+  const cookie = cookies().get("session")?.value;
+  if (!cookie) return null;
+
+  const { payload } = await jwtVerify<Session>(cookie, encodeKey);
+
+  if (!payload) throw new Error("Session not found");
+
+  const newPayload: Session = {
+    user: {
+      ...payload.user,
+    },
+    accessToken,
+    refreshToken,
+  }
+
+  await createSession(newPayload);
+
+}
+
 // export async function deleteSession() {
 //   await cookies().delete("session");
 // }
