@@ -21,9 +21,11 @@ export const authFetch = async (url: string | URL, options: RequestInit = {}) =>
     const newAccessToken = await refreshToken(
       session.refreshToken
     );
-
     if (newAccessToken) {
-      options.headers.Authorization = `Bearer ${newAccessToken}`;
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${newAccessToken}`,
+      };
       response = await fetch(url, options);
     }
   }

@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { BACKEND_URL } from "./constants";
-import { createSession, updateTokens } from "./session";
+import { createSession } from "./session";
 import {
   FormState,
   LoginFormSchema,
@@ -120,13 +120,25 @@ export const refreshToken = async (oldRefreshToken: string) => {
         "Failed to refresh token" + response.statusText
       );
     }
-    const { accessToken, refreshToken } =
-      await response.json();
+    const { accessToken, refreshToken } = await response.json();
 
-    await updateTokens({
-      accessToken,
-      refreshToken
+    console.log("Refresh Token --->", refreshToken);
+
+
+    // await updateTokens({
+    //   accessToken,
+    //   refreshToken
+    // });
+
+    const updateRes = await fetch("http://localhost:3000/api/auth/update", {
+      method: "POST",
+      body: JSON.stringify({
+        accessToken,
+        refreshToken,
+      }),
     });
+
+    if (!updateRes.ok) throw new Error("Failed to update tokens")
 
     return accessToken;
 
